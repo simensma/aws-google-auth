@@ -154,7 +154,7 @@ class TestRegionProcessing(unittest.TestCase):
 
 class TestRoleProcessing(unittest.TestCase):
 
-    def test_default(self):
+    def     test_default(self):
         args = parse_args([])
         config = resolve_config(args)
         self.assertEqual(None, config.role_arn)

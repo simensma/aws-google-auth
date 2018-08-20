@@ -56,7 +56,8 @@ class TestInit(unittest.TestCase):
                                          save_failure_html=False,
                                          saml_cache=True,
                                          sp_id=None,
-                                         username=None))
+                                         username=None,
+                                         print_creds=False))
                           ],
                          resolve_config.mock_calls)
 
@@ -72,7 +73,8 @@ class TestInit(unittest.TestCase):
                                          save_failure_html=False,
                                          saml_cache=True,
                                          sp_id=None,
-                                         username=None),
+                                         username=None,
+                                         print_creds=False),
                                mock_config)
                           ],
                          process_auth.mock_calls)
@@ -90,6 +92,7 @@ class TestInit(unittest.TestCase):
         mock_config.idp_id = None
         mock_config.sp_id = None
         mock_config.return_value = None
+        mock_config.print_creds = False
 
         mock_amazon_client = Mock()
         mock_google_client = Mock()

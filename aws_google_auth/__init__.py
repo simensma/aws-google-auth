@@ -28,6 +28,7 @@ def parse_args(args):
     parser.add_argument('-R', '--region', help='AWS region endpoint ($AWS_DEFAULT_REGION)')
     parser.add_argument('-d', '--duration', type=int, help='Credential duration ($DURATION)')
     parser.add_argument('-p', '--profile', help='AWS profile (defaults to value of $AWS_PROFILE, then falls back to \'sts\')')
+    parser.add_argument('-P', '--print_creds', dest="print_creds", action='store_true', default=False, help='Print the credentials.')
     parser.add_argument('-D', '--disable-u2f', action='store_true', help='Disable U2F functionality.')
     parser.add_argument('--no-cache', dest="saml_cache", action='store_false', help='Do not cache the SAML Assertion.')
     parser.add_argument('--resolve-aliases', action='store_true', help='Resolve AWS account aliases.')
@@ -62,6 +63,7 @@ def cli(cli_args):
         args = parse_args(args=cli_args)
 
         config = resolve_config(args)
+
         process_auth(args, config)
     except google.ExpectedGoogleException as ex:
         print(ex)
@@ -147,6 +149,10 @@ def resolve_config(args):
         args.keyring,
         config.keyring)
 
+    config.print_creds = coalesce(
+        args.print_creds,
+        config.print_creds)
+
     return config
 
 
@@ -215,10 +221,11 @@ def process_auth(args, config):
     print("Assuming " + config.role_arn)
     print("Credentials Expiration: " + format(amazon_client.expiration.astimezone(get_localzone())))
 
-    if config.profile:
-        config.write(amazon_client)
-    else:
+    if config.print_creds:
+        print("Printing creds...")
         amazon_client.print_export_line()
+
+    config.write(amazon_client)
 
 
 def main():

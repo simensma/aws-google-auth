@@ -33,6 +33,7 @@ class Configuration(object):
         self.u2f_disabled = False
         self.resolve_aliases = False
         self.username = None
+        self.print_creds = False
 
     # For the "~/.aws/config" file, we use the format "[profile testing]"
     # for the 'testing' profile. The credential file will just be "[testing]"
@@ -130,6 +131,9 @@ class Configuration(object):
 
         # u2f_disabled
         assert (self.u2f_disabled.__class__ is bool), "Expected u2f_disabled to be a boolean. Got {}.".format(self.u2f_disabled.__class__)
+
+        # print_creds
+        assert (self.print_creds.__class__ is bool), "Expected print_creds to be a boolean. Got {}.".format(self.print_creds.__class__)
 
     # Write the configuration (and credentials) out to disk. This allows for
     # regular AWS tooling (aws cli and boto) to use the credentials in the
