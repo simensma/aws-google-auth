@@ -173,7 +173,7 @@ def process_auth(args, config):
         if config.keyring:
             keyring_password = keyring.get_password("aws-google-auth", config.username)
             if keyring_password:
-                config.password = keyring_password
+                config.password = str(keyring_password)
             else:
                 config.password = util.Util.get_password("Google Password: ")
         else:
